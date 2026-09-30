@@ -3,11 +3,17 @@ menu "Rear e-paper display"
 
     choice REAR_EINK_MODE
         prompt "Display mode"
-        default REAR_EINK_MODE_TEST_PATTERN
+        default REAR_EINK_MODE_CHARGING
         help
+            Charging data: the normal display. Until the BT-2 source exists, the
+            data comes from the fake source, which simulates a short day with an
+            outage, so every screen state appears.
+
             Test pattern: draws a fixed pattern and a counter, and logs the refresh
             times. Use it to bring up a new board or panel.
 
+        config REAR_EINK_MODE_CHARGING
+            bool "Charging data"
         config REAR_EINK_MODE_TEST_PATTERN
             bool "Test pattern"
     endchoice
@@ -77,6 +83,29 @@ menu "Rear e-paper display"
         help
             Time between two display updates. The test default is 5 s. Use a
             longer interval in normal use, to save power and panel wear.
+
+    config REAR_EINK_STALE_AFTER_S
+        int "Show the data age after (seconds)"
+        range 1 86400
+        default 30
+        help
+            When the newest reading is older than this, the display shows its age.
+
+    config REAR_EINK_OFFLINE_AFTER_S
+        int "Show offline after (seconds)"
+        range 1 86400
+        default 120
+        help
+            When the newest reading is older than this, the display shows the
+            offline screen.
+
+    config REAR_EINK_MAX_UNCHANGED_S
+        int "Full refresh of an unchanged image after (seconds)"
+        range 60 86400
+        default 3600
+        help
+            The display refreshes only when the image changes. It also does a full
+            refresh after this time with no change, to keep the image clean.
 
     config REAR_EINK_FULL_REFRESH_EVERY
         int "Full refresh after this many fast refreshes"

@@ -47,7 +47,7 @@ The host tests use Unity on the ESP-IDF `linux` target. They test the pure C++ c
 ./scripts/run_host_tests.sh
 ```
 
-The script builds `tests/host/` and runs the test binary. It exits with a non-zero status if a test fails. To add a test, add a `test_<name>.cpp` file in `tests/host/main/`, add it to `SRCS` in `tests/host/main/CMakeLists.txt`, and call its `run_<name>_tests()` function from `test_main.cpp`.
+The script builds `tests/host/` and runs the test binary. The display tests also write a PBM image of each screen state to `tests/host/build/previews/`. Open them in an image viewer to check a layout change with no board. It exits with a non-zero status if a test fails. To add a test, add a `test_<name>.cpp` file in `tests/host/main/`, add it to `SRCS` in `tests/host/main/CMakeLists.txt`, and call its `run_<name>_tests()` function from `test_main.cpp`.
 
 To test on hardware, flash the app and read the serial monitor:
 

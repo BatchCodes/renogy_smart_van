@@ -10,5 +10,6 @@ int main() {
     run_latest_reading_tests();
     run_fake_source_tests();
     run_mono_gfx_tests();
+    run_eink_view_tests();
     return UNITY_END();
 }

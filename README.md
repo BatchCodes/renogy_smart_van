@@ -6,7 +6,7 @@ The first target is a van with a Renogy RBC50D1S DC-DC charger with MPPT. The di
 
 `van_sensors` is a working name. The project gets a final name when it is published.
 
-> **Status: early development.** `firmware/rear_eink/` builds and has a display test pattern. It does not show charging data yet, and it has not been tested on hardware yet.
+> **Status: early development.** `firmware/rear_eink/` builds and shows the charging layout with fake data. It does not read the BT-2 yet, and it has not been tested on hardware yet.
 
 ## How It Works
 
@@ -163,11 +163,14 @@ The options are in the "Rear e-paper display" menu:
 
 | Option | Purpose |
 | --- | --- |
-| Display mode | "Test pattern" draws a fixed pattern and logs the refresh times. Use it to bring up a board. |
+| Display mode | "Charging data" is the normal display. Until the BT-2 support exists, it shows fake data from a simulated five minute day, including the stale and offline screens. "Test pattern" draws a fixed pattern and logs the refresh times. Use it to bring up a board. |
 | Panel model | Heltec Wireless Paper hardware version. "Auto detect" works for V1.1, V1.1.1 and V1.2. Select V1.0 manually. |
 | Display rotation | Turns the image by 180 degrees. |
 | Panel pins | The e-paper pins. The defaults are for the Heltec Wireless Paper. |
 | Refresh interval | Time between two display updates. The test default is 5 s. |
+| Show the data age after | When the newest reading is older than this, the display shows its age in an inverted box. |
+| Show offline after | When the newest reading is older than this, the display shows the offline screen. |
+| Full refresh of an unchanged image after | The display refreshes only when the image changes, and does a full refresh after this time with no change. |
 | Full refresh after this many fast refreshes | A full refresh removes ghosting, but the panel flashes. |
 
 These options are planned:
@@ -178,7 +181,6 @@ These options are planned:
 | BT-2 name prefix | The BLE name to look for. |
 | BT-2 MAC address | Optional. It stops the unit from connecting to another BT-2 nearby, for example at a campsite. |
 | Poll interval | Time between two reads from the BT-2. |
-| Stale and offline timeouts | Time before the display shows the data age or "offline". |
 
 ## Visual Studio Code
 
