@@ -6,8 +6,7 @@ menu "Rear e-paper display"
         default REAR_EINK_MODE_CHARGING
         help
             Charging data: the normal display. Until the BT-2 source exists, the
-            data comes from the fake source, which simulates a short day with an
-            outage, so every screen state appears.
+            data comes from the fake source, which simulates a five minute day.
 
             Test pattern: draws a fixed pattern and a counter, and logs the refresh
             times. Use it to bring up a new board or panel.
@@ -17,6 +16,16 @@ menu "Rear e-paper display"
         config REAR_EINK_MODE_TEST_PATTERN
             bool "Test pattern"
     endchoice
+
+    config REAR_EINK_FAKE_OUTAGES
+        bool "Fake data: simulate BT-2 outages"
+        default n
+        depends on REAR_EINK_MODE_CHARGING
+        help
+            The fake source simulates a five minute day: sunrise, noon, a drive
+            and night. The values change at every refresh. With this option, the
+            source also stops sending for the last three minutes of each day, so
+            the "Updated" box and the offline screen appear.
 
     choice REAR_EINK_PANEL_MODEL
         prompt "Panel model"

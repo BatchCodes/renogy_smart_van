@@ -49,20 +49,26 @@ ChargingData FakeSource::reading_at(std::uint64_t now_ms) const {
     const float sun = std::max(0.0F, std::sin(2.0F * std::numbers::pi_v<float> * day_fraction));
     const bool is_day = sun > 0.0F;
 
+    // A small ripple, so the battery values change at every refresh, also at night.
+    const float seconds = static_cast<float>(now_ms % 3'600'000) / 1000.0F;
+    const float ripple = 0.5F * std::sin(seconds * 0.9F) + 0.5F * std::sin(seconds * 2.3F);
+
     ChargingData data;
     data.pv_power_w = std::round(kPeakPvPowerW * sun);
     data.pv_voltage_v = is_day ? kPeakPvVoltageV - 1.5F * (1.0F - sun) : 0.0F;
     data.pv_current_a = data.pv_voltage_v > 0.0F ? data.pv_power_w / data.pv_voltage_v : 0.0F;
 
-    data.battery_voltage_v =
-        kRestingBatteryVoltageV + (kAbsorptionBatteryVoltageV - kRestingBatteryVoltageV) * sun;
+    data.battery_voltage_v = kRestingBatteryVoltageV +
+                             (kAbsorptionBatteryVoltageV - kRestingBatteryVoltageV) * sun +
+                             0.03F * ripple;
     const bool is_driving = day_fraction >= kDriveStart && day_fraction < kDriveEnd;
-    data.alternator_voltage_v = is_driving ? kRunningStarterVoltageV : kRestingStarterVoltageV;
-    data.alternator_current_a = is_driving ? kAlternatorChargeCurrentA : 0.0F;
+    data.alternator_voltage_v =
+        (is_driving ? kRunningStarterVoltageV : kRestingStarterVoltageV) + 0.02F * ripple;
+    data.alternator_current_a = is_driving ? kAlternatorChargeCurrentA + 0.4F * ripple : 0.0F;
     data.alternator_power_w = std::round(data.alternator_voltage_v * data.alternator_current_a);
 
     data.battery_current_a = (data.pv_power_w + data.alternator_power_w) / data.battery_voltage_v -
-                             kAverageLoadCurrentA;
+                             kAverageLoadCurrentA + 0.3F * ripple;
 
     data.controller_temperature_c = static_cast<std::int8_t>(18 + std::lround(22.0F * sun));
     data.battery_temperature_c = static_cast<std::int8_t>(16 + std::lround(6.0F * sun));

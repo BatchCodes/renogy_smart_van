@@ -20,7 +20,7 @@ void test_noon_has_peak_power() {
     const auto noon = source.reading_at(25'000);
     TEST_ASSERT_EQUAL_FLOAT(400.0F, noon.pv_power_w);
     TEST_ASSERT_TRUE(noon.charge_state == ChargeState::boost);
-    TEST_ASSERT_FLOAT_WITHIN(0.01F, 14.4F, noon.battery_voltage_v);
+    TEST_ASSERT_FLOAT_WITHIN(0.05F, 14.4F, noon.battery_voltage_v);
     TEST_ASSERT_TRUE(noon.battery_current_a > 0.0F);
 }
 
@@ -55,6 +55,14 @@ void test_drive_charges_from_alternator() {
     const auto parked = source.reading_at(10'000);
     TEST_ASSERT_EQUAL_FLOAT(0.0F, parked.alternator_current_a);
     TEST_ASSERT_TRUE(parked.alternator_voltage_v > 12.0F);
+}
+
+void test_night_values_change_between_refreshes() {
+    const FakeSource source(kConfig);
+    const auto first = source.reading_at(70'000);
+    const auto second = source.reading_at(75'000);
+    TEST_ASSERT_TRUE(first.battery_voltage_v != second.battery_voltage_v);
+    TEST_ASSERT_TRUE(first.battery_current_a != second.battery_current_a);
 }
 
 void test_outage_returns_nothing() {
@@ -93,6 +101,7 @@ void run_fake_source_tests() {
     RUN_TEST(test_night_has_no_pv);
     RUN_TEST(test_energy_rises_then_holds);
     RUN_TEST(test_drive_charges_from_alternator);
+    RUN_TEST(test_night_values_change_between_refreshes);
     RUN_TEST(test_outage_returns_nothing);
     RUN_TEST(test_outage_can_be_disabled);
     RUN_TEST(test_values_depend_only_on_time);

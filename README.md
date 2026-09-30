@@ -164,7 +164,8 @@ The options are in the "Rear e-paper display" menu:
 
 | Option | Purpose |
 | --- | --- |
-| Display mode | "Charging data" is the normal display. Until the BT-2 support exists, it shows fake data from a simulated five minute day, including the stale and offline screens. "Test pattern" draws a fixed pattern and logs the refresh times. Use it to bring up a board. |
+| Display mode | "Charging data" is the normal display. Until the BT-2 support exists, it shows fake data from a simulated five minute day. The values change at every refresh. "Test pattern" draws a fixed pattern and logs the refresh times. Use it to bring up a board. |
+| Fake data: simulate BT-2 outages | The fake source stops sending for three minutes of each five minute day, so the stale box and the offline screen appear. Off by default. |
 | Panel model | Heltec Wireless Paper hardware version. "Auto detect" works for V1.1, V1.1.1 and V1.2. Select V1.0 manually. |
 | Display rotation | Turns the image by 180 degrees. |
 | Panel pins | The e-paper pins. The defaults are for the Heltec Wireless Paper. |
