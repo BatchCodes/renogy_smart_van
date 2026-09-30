@@ -60,6 +60,8 @@ ChargingData sample_data() {
     data.pv_current_a = 17.8F;
     data.battery_voltage_v = 14.32F;
     data.battery_current_a = 22.9F;
+    data.alternator_voltage_v = 13.71F;
+    data.alternator_current_a = 2.1F;
     data.energy_today_wh = 1840;
     data.charge_state = charging_data::ChargeState::mppt;
     return data;
@@ -81,9 +83,12 @@ void test_render_connected() {
     write_preview(*frame, "connected");
     // The divider line is solid across the width.
     for (int x = 0; x < FrameBuffer::kWidth; ++x) {
-        TEST_ASSERT_TRUE(frame->pixel(x, 72) == Color::black);
+        TEST_ASSERT_TRUE(frame->pixel(x, 55) == Color::black);
     }
-    TEST_ASSERT_TRUE(count_black(*frame, 16, 64) > 300);
+    TEST_ASSERT_TRUE(count_black(*frame, 16, 50) > 300);
+    // Both battery rows have values.
+    TEST_ASSERT_TRUE(count_black(*frame, 58, 78) > 150);
+    TEST_ASSERT_TRUE(count_black(*frame, 80, 100) > 150);
 }
 
 void test_render_stale_shows_age_box() {
@@ -105,7 +110,7 @@ void test_render_offline_has_no_divider() {
     reading.update(sample_data(), 0);
     eink_view::render(*frame, reading, 300'000);
     write_preview(*frame, "offline");
-    TEST_ASSERT_TRUE(frame->pixel(0, 72) == Color::white);
+    TEST_ASSERT_TRUE(frame->pixel(0, 55) == Color::white);
     TEST_ASSERT_TRUE(count_black(*frame, 25, 80) > 100);
 }
 
@@ -114,6 +119,16 @@ void test_render_waiting_for_first_data() {
     const LatestReading reading(kFreshness);
     eink_view::render(*frame, reading, 0);
     write_preview(*frame, "waiting");
+    TEST_ASSERT_TRUE(count_black(*frame, 0, FrameBuffer::kHeight) > 100);
+}
+
+void test_render_fake_drive() {
+    const auto frame = std::make_unique<FrameBuffer>(Rotation::clockwise_270);
+    const FakeSource source(FakeSourceConfig{.day_length_ms = 100'000});
+    LatestReading reading(kFreshness);
+    reading.update(source.reading_at(35'000), 35'000);
+    eink_view::render(*frame, reading, 47'000);
+    write_preview(*frame, "fake_drive");
     TEST_ASSERT_TRUE(count_black(*frame, 0, FrameBuffer::kHeight) > 100);
 }
 
@@ -165,6 +180,7 @@ void run_eink_view_tests() {
     RUN_TEST(test_render_stale_shows_age_box);
     RUN_TEST(test_render_offline_has_no_divider);
     RUN_TEST(test_render_waiting_for_first_data);
+    RUN_TEST(test_render_fake_drive);
     RUN_TEST(test_render_fake_night);
     RUN_TEST(test_first_frame_is_full_refresh);
     RUN_TEST(test_unchanged_frame_is_skipped);

@@ -46,6 +46,17 @@ void test_energy_rises_then_holds() {
     TEST_ASSERT_EQUAL_UINT32(0, source.reading_at(0).energy_today_wh);
 }
 
+void test_drive_charges_from_alternator() {
+    const FakeSource source(kConfig);
+    const auto driving = source.reading_at(35'000);
+    TEST_ASSERT_TRUE(driving.charge_state == ChargeState::alternator_direct);
+    TEST_ASSERT_TRUE(driving.alternator_current_a > 0.0F);
+    TEST_ASSERT_TRUE(driving.alternator_voltage_v > 13.5F);
+    const auto parked = source.reading_at(10'000);
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, parked.alternator_current_a);
+    TEST_ASSERT_TRUE(parked.alternator_voltage_v > 12.0F);
+}
+
 void test_outage_returns_nothing() {
     FakeSource source(kConfig);
     TEST_ASSERT_TRUE(source.poll(79'999).has_value());
@@ -81,6 +92,7 @@ void run_fake_source_tests() {
     RUN_TEST(test_noon_has_peak_power);
     RUN_TEST(test_night_has_no_pv);
     RUN_TEST(test_energy_rises_then_holds);
+    RUN_TEST(test_drive_charges_from_alternator);
     RUN_TEST(test_outage_returns_nothing);
     RUN_TEST(test_outage_can_be_disabled);
     RUN_TEST(test_values_depend_only_on_time);

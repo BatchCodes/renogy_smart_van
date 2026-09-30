@@ -19,10 +19,11 @@ Renogy charger --RS485-- BT-2 module --BLE--+-- Renogy DC Home app (phone)
 The BT-2 is a bridge between the charger's RS485 port and BLE. The firmware sends Modbus read requests to the BT-2 over BLE and decodes the responses. The display shows these values:
 
 - solar (PV) power, voltage and current
-- house battery voltage and current
+- auxiliary (house) battery voltage and current
+- starter battery voltage and current (the charger's alternator input)
 - charging state
 - energy for the day, in kWh
-- the data age, or "offline" when the BT-2 does not respond
+- the time since the last update, or "offline" when the BT-2 does not respond
 
 ## Supported Hardware
 

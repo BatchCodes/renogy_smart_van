@@ -15,6 +15,12 @@ constexpr float kRestingBatteryVoltageV = 12.9F;
 constexpr float kAbsorptionBatteryVoltageV = 14.4F;
 constexpr float kAverageLoadCurrentA = 1.5F;
 constexpr std::uint32_t kPeakEnergyPerDayWh = 1800;
+constexpr float kRestingStarterVoltageV = 12.6F;
+constexpr float kRunningStarterVoltageV = 14.1F;
+constexpr float kAlternatorChargeCurrentA = 18.0F;
+// The van drives from 30 % to 45 % of the day.
+constexpr float kDriveStart = 0.30F;
+constexpr float kDriveEnd = 0.45F;
 
 }  // namespace
 
@@ -50,7 +56,13 @@ ChargingData FakeSource::reading_at(std::uint64_t now_ms) const {
 
     data.battery_voltage_v =
         kRestingBatteryVoltageV + (kAbsorptionBatteryVoltageV - kRestingBatteryVoltageV) * sun;
-    data.battery_current_a = data.pv_power_w / data.battery_voltage_v - kAverageLoadCurrentA;
+    const bool is_driving = day_fraction >= kDriveStart && day_fraction < kDriveEnd;
+    data.alternator_voltage_v = is_driving ? kRunningStarterVoltageV : kRestingStarterVoltageV;
+    data.alternator_current_a = is_driving ? kAlternatorChargeCurrentA : 0.0F;
+    data.alternator_power_w = std::round(data.alternator_voltage_v * data.alternator_current_a);
+
+    data.battery_current_a = (data.pv_power_w + data.alternator_power_w) / data.battery_voltage_v -
+                             kAverageLoadCurrentA;
 
     data.controller_temperature_c = static_cast<std::int8_t>(18 + std::lround(22.0F * sun));
     data.battery_temperature_c = static_cast<std::int8_t>(16 + std::lround(6.0F * sun));
@@ -61,7 +73,9 @@ ChargingData FakeSource::reading_at(std::uint64_t now_ms) const {
         (1.0F - std::cos(std::numbers::pi_v<float> * sun_progress)) / 2.0F;
     data.energy_today_wh = static_cast<std::uint32_t>(std::lround(kPeakEnergyPerDayWh * energy_curve));
 
-    if (!is_day) {
+    if (is_driving) {
+        data.charge_state = ChargeState::alternator_direct;
+    } else if (!is_day) {
         data.charge_state = ChargeState::deactivated;
     } else if (sun > 0.9F) {
         data.charge_state = ChargeState::boost;
