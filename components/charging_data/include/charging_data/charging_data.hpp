@@ -33,6 +33,7 @@ struct ChargingData {
     std::int8_t controller_temperature_c = 0;
     std::int8_t battery_temperature_c = 0;
     std::uint32_t energy_today_wh = 0;
+    std::uint8_t battery_soc_percent = 0;  // State of charge that the charger estimates.
     ChargeState charge_state = ChargeState::unknown;
 
     [[nodiscard]] float battery_charging_power_w() const {

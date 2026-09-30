@@ -11,5 +11,6 @@ int main() {
     run_fake_source_tests();
     run_mono_gfx_tests();
     run_eink_view_tests();
+    run_renogy_protocol_tests();
     return UNITY_END();
 }
