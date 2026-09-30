@@ -37,6 +37,8 @@ void run_charging_display(epaper_panel::PanelDevice& device, charging_data::Char
         .max_unchanged_ms = CONFIG_REAR_EINK_MAX_UNCHANGED_S * 1000U,
     });
 
+    // vTaskDelayUntil keeps a fixed period, so the refresh time does not add to it.
+    TickType_t last_wake = xTaskGetTickCount();
     for (;;) {
         const std::uint64_t time_ms = now_ms();
         if (const auto data = source.poll(time_ms)) {
@@ -61,7 +63,7 @@ void run_charging_display(epaper_panel::PanelDevice& device, charging_data::Char
             device.panel().sleep();
         }
 
-        vTaskDelay(pdMS_TO_TICKS(CONFIG_REAR_EINK_REFRESH_INTERVAL_S * 1000));
+        vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CONFIG_REAR_EINK_REFRESH_INTERVAL_S * 1000));
     }
 }
 

@@ -57,7 +57,7 @@ The drawing surface is landscape, 250 × 122. The `Display rotation` option in `
 | --- | --- | --- | --- |
 | SSD1680 (V1.0) | About 4.0 s | About 0.74 s | Measured by the GxEPD2 author. |
 | JD79656 (V1.1) | At least 3.65 s | At least 0.72 s | Meshtastic polling delays, not measurements. |
-| SSD1682 (V1.1.1/V1.2) | At least 1.5 s | At least 0.5 s | Meshtastic polling delays, not measurements. |
+| SSD1682 (V1.1.1/V1.2) | 1.43 s | 0.54 s | Measured with `rear_eink` on a V1.1.1/V1.2 board on 2026-09-30. The times include the SPI transfer. |
 
 The test pattern mode of `rear_eink` logs the measured time of each refresh.
 

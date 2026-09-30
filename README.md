@@ -6,7 +6,7 @@ The first target is a van with a Renogy RBC50D1S DC-DC charger with MPPT. The di
 
 `van_sensors` is a working name. The project gets a final name when it is published.
 
-> **Status: early development.** `firmware/rear_eink/` builds and shows the charging layout with fake data. It does not read the BT-2 yet, and it has not been tested on hardware yet.
+> **Status: early development.** `firmware/rear_eink/` shows the charging layout with fake data. It works on a Heltec Wireless Paper V1.1.1/V1.2. It does not read the BT-2 yet. V1.0 and V1.1 boards are not tested yet.
 
 ## How It Works
 
@@ -31,7 +31,7 @@ The BT-2 is a bridge between the charger's RS485 port and BLE. The firmware send
 | --- | --- | --- |
 | Renogy RBC50D1S DC-DC charger with MPPT | Target | Connected to a BT-2 module. |
 | Other Renogy controllers with a BT-2 or BT-1 module | Untested | The protocol is the same. The register map can be different. |
-| [Heltec Wireless Paper](https://heltec.org/project/wireless-paper/) (ESP32-S3, 2.13" e-paper) | Target | The first display board. Hardware versions V1.0, V1.1, V1.1.1 and V1.2 use different panels. The firmware supports all of them. Refer to [Heltec Wireless Paper hardware notes](docs/renogy_displays/heltec_wireless_paper.md). |
+| [Heltec Wireless Paper](https://heltec.org/project/wireless-paper/) (ESP32-S3, 2.13" e-paper) | Tested on V1.1.1/V1.2 | The first display board. Hardware versions V1.0, V1.1, V1.1.1 and V1.2 use different panels. The firmware supports all of them. Refer to [Heltec Wireless Paper hardware notes](docs/renogy_displays/heltec_wireless_paper.md). |
 | Other ESP32-S3 boards with an e-paper panel | Untested | Refer to [CONTRIBUTING.md](CONTRIBUTING.md) to add a board. |
 | Any ESP32 development board (for example ESP-WROOM-32) | Development only | Use it to test the BLE connection without a display. |
 

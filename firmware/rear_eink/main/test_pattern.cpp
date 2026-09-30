@@ -56,6 +56,7 @@ void draw_pattern(FrameBuffer& frame, const char* panel_name, unsigned counter) 
 void run_test_pattern(epaper_panel::PanelDevice& device) {
     static FrameBuffer frame(rotation());
     unsigned counter = 0;
+    TickType_t last_wake = xTaskGetTickCount();
 
     for (;;) {
         const bool full = counter % CONFIG_REAR_EINK_FULL_REFRESH_EVERY == 0;
@@ -75,7 +76,7 @@ void run_test_pattern(epaper_panel::PanelDevice& device) {
 
         device.panel().sleep();
         ++counter;
-        vTaskDelay(pdMS_TO_TICKS(CONFIG_REAR_EINK_REFRESH_INTERVAL_S * 1000));
+        vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CONFIG_REAR_EINK_REFRESH_INTERVAL_S * 1000));
     }
 }
 
