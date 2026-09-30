@@ -40,7 +40,14 @@ To change the ESP-IDF version, update [scripts/esp_idf_version.txt](scripts/esp_
 
 ## Test
 
-The host tests use Unity on the ESP-IDF `linux` target. The test commands are added with the first test in `tests/host/`. Run the host tests before you send a change.
+The host tests use Unity on the ESP-IDF `linux` target. They test the pure C++ components (`charging_data`, and later `renogy_protocol`) on your computer, with no board. Run them before you send a change:
+
+```bash
+. ~/esp/esp-idf/export.sh
+./scripts/run_host_tests.sh
+```
+
+The script builds `tests/host/` and runs the test binary. It exits with a non-zero status if a test fails. To add a test, add a `test_<name>.cpp` file in `tests/host/main/`, add it to `SRCS` in `tests/host/main/CMakeLists.txt`, and call its `run_<name>_tests()` function from `test_main.cpp`.
 
 To test on hardware, flash the app and read the serial monitor:
 
