@@ -1,0 +1,26 @@
+{
+  "version": "0.2",
+  "language": "en-GB",
+  "ignorePaths": ["build/**", "managed_components/**", "LICENSE", "sdkconfig*"],
+  "words": [
+    "Bluedroid",
+    "clangd",
+    "dialout",
+    "ESPHome",
+    "Fairphone",
+    "Heltec",
+    "idf",
+    "Kconfig",
+    "LAFVIN",
+    "menuconfig",
+    "MPPT",
+    "NimBLE",
+    "nRF",
+    "PSRAM",
+    "Renogy",
+    "sdkconfig",
+    "UART",
+    "UUIDs",
+    "WROOM"
+  ]
+}
