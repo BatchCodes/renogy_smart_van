@@ -6,7 +6,7 @@ The first target is a van with a Renogy RBC50D1S DC-DC charger with MPPT. The di
 
 `van_sensors` is a working name. The project gets a final name when it is published.
 
-> **Status: early development.** The repository set-up is complete. The firmware apps do not exist yet. The build and flash commands below show the planned workflow for `firmware/rear_eink/`.
+> **Status: early development.** `firmware/rear_eink/` builds and has a display test pattern. It does not show charging data yet, and it has not been tested on hardware yet.
 
 ## How It Works
 
@@ -30,7 +30,7 @@ The BT-2 is a bridge between the charger's RS485 port and BLE. The firmware send
 | --- | --- | --- |
 | Renogy RBC50D1S DC-DC charger with MPPT | Target | Connected to a BT-2 module. |
 | Other Renogy controllers with a BT-2 or BT-1 module | Untested | The protocol is the same. The register map can be different. |
-| [Heltec Wireless Paper](https://heltec.org/project/wireless-paper/) (ESP32-S3, 2.13" e-paper) | Target | The first display board. |
+| [Heltec Wireless Paper](https://heltec.org/project/wireless-paper/) (ESP32-S3, 2.13" e-paper) | Target | The first display board. Hardware versions V1.0, V1.1, V1.1.1 and V1.2 use different panels. The firmware supports all of them. Refer to [Heltec Wireless Paper hardware notes](docs/renogy_displays/heltec_wireless_paper.md). |
 | Other ESP32-S3 boards with an e-paper panel | Untested | Refer to [CONTRIBUTING.md](CONTRIBUTING.md) to add a board. |
 | Any ESP32 development board (for example ESP-WROOM-32) | Development only | Use it to test the BLE connection without a display. |
 
@@ -112,10 +112,10 @@ Connect the board with USB. Find its serial port:
 ls /dev/ttyACM* /dev/ttyUSB*
 ```
 
-Flash the firmware and open the serial monitor. Replace `/dev/ttyACM0` with your port:
+Flash the firmware and open the serial monitor. The Heltec Wireless Paper appears as `/dev/ttyUSB0`. Replace it with your port if it is different:
 
 ```bash
-idf.py -p /dev/ttyACM0 flash monitor
+idf.py -p /dev/ttyUSB0 flash monitor
 ```
 
 To exit the serial monitor, press `Ctrl+]`.
@@ -134,7 +134,7 @@ Build the rear display app:
 On Linux, flash the firmware and open the serial monitor from the container. The `-p` option passes the serial port into the container:
 
 ```bash
-./scripts/idf_docker.sh -p /dev/ttyACM0 firmware/rear_eink flash monitor
+./scripts/idf_docker.sh -p /dev/ttyUSB0 firmware/rear_eink flash monitor
 ```
 
 The script runs the container as your user, so the files in `build/` belong to you and not to `root`. The first run downloads the image, which is several GB.
@@ -159,14 +159,25 @@ Device-specific values are Kconfig options. They are not hard-coded. Open the co
 idf.py menuconfig
 ```
 
-The planned options are:
+The options are in the "Rear e-paper display" menu:
+
+| Option | Purpose |
+| --- | --- |
+| Display mode | "Test pattern" draws a fixed pattern and logs the refresh times. Use it to bring up a board. |
+| Panel model | Heltec Wireless Paper hardware version. "Auto detect" works for V1.1, V1.1.1 and V1.2. Select V1.0 manually. |
+| Display rotation | Turns the image by 180 degrees. |
+| Panel pins | The e-paper pins. The defaults are for the Heltec Wireless Paper. |
+| Refresh interval | Time between two display updates. The test default is 5 s. |
+| Full refresh after this many fast refreshes | A full refresh removes ghosting, but the panel flashes. |
+
+These options are planned:
 
 | Option | Purpose |
 | --- | --- |
 | Data source | Fake data (display test with no BT-2) or the BT-2. |
 | BT-2 name prefix | The BLE name to look for. |
 | BT-2 MAC address | Optional. It stops the unit from connecting to another BT-2 nearby, for example at a campsite. |
-| Poll interval | Time between two reads from the BT-2. The test default is 5 s. |
+| Poll interval | Time between two reads from the BT-2. |
 | Stale and offline timeouts | Time before the display shows the data age or "offline". |
 
 ## Visual Studio Code

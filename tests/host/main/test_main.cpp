@@ -9,5 +9,6 @@ int main() {
     UNITY_BEGIN();
     run_latest_reading_tests();
     run_fake_source_tests();
+    run_mono_gfx_tests();
     return UNITY_END();
 }

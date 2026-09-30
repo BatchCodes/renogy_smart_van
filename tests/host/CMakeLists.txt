@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.22)
 
 set(EXTRA_COMPONENT_DIRS
     "${CMAKE_CURRENT_LIST_DIR}/../../components/charging_data"
+    "${CMAKE_CURRENT_LIST_DIR}/../../components/mono_gfx"
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)

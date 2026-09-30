@@ -1,0 +1,89 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+menu "Rear e-paper display"
+
+    choice REAR_EINK_MODE
+        prompt "Display mode"
+        default REAR_EINK_MODE_TEST_PATTERN
+        help
+            Test pattern: draws a fixed pattern and a counter, and logs the refresh
+            times. Use it to bring up a new board or panel.
+
+        config REAR_EINK_MODE_TEST_PATTERN
+            bool "Test pattern"
+    endchoice
+
+    choice REAR_EINK_PANEL_MODEL
+        prompt "Panel model"
+        default REAR_EINK_PANEL_AUTO
+        help
+            Heltec Wireless Paper hardware version. Auto detection tells V1.1 and
+            V1.1.1/V1.2 apart. V1.0 cannot be detected, so select it here.
+
+        config REAR_EINK_PANEL_AUTO
+            bool "Auto detect (V1.1 or V1.1.1/V1.2)"
+        config REAR_EINK_PANEL_V1_0
+            bool "Heltec V1.0 (SSD1680, DEPG0213BNS800)"
+        config REAR_EINK_PANEL_V1_1
+            bool "Heltec V1.1 (JD79656, LCMEN2R13EFC1, green film)"
+        config REAR_EINK_PANEL_V1_2
+            bool "Heltec V1.1.1 or V1.2 (SSD1682, E0213A367)"
+    endchoice
+
+    choice REAR_EINK_ROTATION
+        prompt "Display rotation"
+        default REAR_EINK_ROTATION_270
+        help
+            Turn the image by 180 degrees if it is upside down on your mounting.
+
+        config REAR_EINK_ROTATION_90
+            bool "90 degrees clockwise"
+        config REAR_EINK_ROTATION_270
+            bool "270 degrees clockwise"
+    endchoice
+
+    menu "Panel pins"
+        config REAR_EINK_PIN_SCK
+            int "SCK GPIO"
+            default 3
+        config REAR_EINK_PIN_MOSI
+            int "MOSI GPIO"
+            default 2
+        config REAR_EINK_PIN_CS
+            int "CS GPIO"
+            default 4
+        config REAR_EINK_PIN_DC
+            int "DC GPIO"
+            default 5
+        config REAR_EINK_PIN_RST
+            int "RST GPIO"
+            default 6
+        config REAR_EINK_PIN_BUSY
+            int "BUSY GPIO"
+            default 7
+        config REAR_EINK_PIN_POWER
+            int "Panel power GPIO (-1 if not switched)"
+            default 45
+            help
+                Vext on the Heltec Wireless Paper.
+        config REAR_EINK_POWER_ACTIVE_LOW
+            bool "Panel power pin is active low"
+            default y
+    endmenu
+
+    config REAR_EINK_REFRESH_INTERVAL_S
+        int "Refresh interval (seconds)"
+        range 1 3600
+        default 5
+        help
+            Time between two display updates. The test default is 5 s. Use a
+            longer interval in normal use, to save power and panel wear.
+
+    config REAR_EINK_FULL_REFRESH_EVERY
+        int "Full refresh after this many fast refreshes"
+        range 1 1000
+        default 20
+        help
+            Fast refreshes leave some ghosting. A full refresh removes it, but the
+            panel flashes.
+
+endmenu

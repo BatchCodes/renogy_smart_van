@@ -25,7 +25,7 @@ Options:
 Examples:
   scripts/idf_docker.sh firmware/rear_eink set-target esp32s3
   scripts/idf_docker.sh firmware/rear_eink build
-  scripts/idf_docker.sh -p /dev/ttyACM0 firmware/rear_eink flash monitor
+  scripts/idf_docker.sh -p /dev/ttyUSB0 firmware/rear_eink flash monitor
 USAGE
 }
 

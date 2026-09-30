@@ -52,7 +52,7 @@ The script builds `tests/host/` and runs the test binary. It exits with a non-ze
 To test on hardware, flash the app and read the serial monitor:
 
 ```bash
-idf.py -p /dev/ttyACM0 flash monitor
+idf.py -p /dev/ttyUSB0 flash monitor
 ```
 
 ## Code Style
@@ -71,11 +71,19 @@ Start each new source file with an SPDX licence header:
 
 In a shell script, use `# SPDX-License-Identifier: GPL-3.0-or-later` on the line after the shebang.
 
+## Fonts
+
+The bitmap fonts in `components/mono_gfx/src/fonts.cpp` are generated from DejaVu Sans. Do not edit that file. To change a font size or add a font, edit `FONT_SPECS` in `tools/fonts/generate_fonts.py` and run it. It needs Pillow (`python3-pil`) and the `fonts-dejavu-core` package:
+
+```bash
+python3 tools/fonts/generate_fonts.py
+```
+
 ## Add a Board
 
 1. Create a new app directory in `firmware/`, for example `firmware/rear_eink_<board>/`. Copy the top-level `CMakeLists.txt` from an existing app. It must set `EXTRA_COMPONENT_DIRS` to `../../components`.
 2. Put the board pins and settings in the app's `sdkconfig.defaults` and Kconfig. Do not change the shared components for one board.
-3. If the board has a new e-paper panel controller, add a driver for it next to the existing driver in `components/epaper_panel/`.
+3. If the board has a new e-paper panel controller, add a driver class for it in `components/epaper_panel/src/`, next to the existing drivers, and add it to `PanelModel` and `PanelDevice::create()`. Use the test pattern display mode to check the orientation and to measure the refresh times.
 4. Add the board to the supported hardware table in [README.md](README.md). Mark it as "Untested" until someone confirms that it works.
 
 ## Add a Renogy Device
