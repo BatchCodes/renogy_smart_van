@@ -42,6 +42,7 @@ The BT-2 is a bridge between the charger's RS485 port and BLE. The firmware send
 - A USB-C data cable. Some cables supply power only and cannot flash the board.
 - Optional: [Visual Studio Code](https://code.visualstudio.com/) with the Espressif ESP-IDF extension.
 - Optional: nRF Connect for Mobile on a phone, to inspect the BT-2.
+- Alternative to the native tools: Docker. Refer to [Build with Docker](#build-with-docker).
 
 ## Installation
 
@@ -118,6 +119,37 @@ idf.py -p /dev/ttyACM0 flash monitor
 ```
 
 To exit the serial monitor, press `Ctrl+]`.
+
+## Build with Docker
+
+Docker is an alternative to the native installation. You do not need the system packages or ESP-IDF on your computer. You need only Docker. The wrapper script uses the official `espressif/idf` image at the version in `scripts/esp_idf_version.txt`.
+
+Build the rear display app:
+
+```bash
+./scripts/idf_docker.sh firmware/rear_eink set-target esp32s3
+./scripts/idf_docker.sh firmware/rear_eink build
+```
+
+On Linux, flash the firmware and open the serial monitor from the container. The `-p` option passes the serial port into the container:
+
+```bash
+./scripts/idf_docker.sh -p /dev/ttyACM0 firmware/rear_eink flash monitor
+```
+
+The script runs the container as your user, so the files in `build/` belong to you and not to `root`. The first run downloads the image, which is several GB.
+
+> **USB pass-through works on Linux only.** Docker Desktop on macOS and Windows cannot give a container access to a USB serial port. On these systems, build in the container, then flash from the host with `esptool` (`pip install esptool`) or with the [Espressif web flasher](https://espressif.github.io/esptool-js/). The flash command and the file offsets are in `firmware/rear_eink/build/flash_args` after a build.
+
+### VS Code Dev Container
+
+The repository has a Dev Container configuration in [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json). It uses the same image.
+
+1. Install the VS Code extension `ms-vscode-remote.remote-containers`.
+2. Open the repository in VS Code.
+3. Open the command palette and run "Dev Containers: Reopen in Container".
+
+The Dev Container runs as `root`. On Linux, files that you build in it belong to `root`. Use `./scripts/idf_docker.sh` if this is a problem. To flash from the Dev Container on Linux, remove the comment markers from the `runArgs` line in `devcontainer.json` and set your serial port.
 
 ## Configuration
 

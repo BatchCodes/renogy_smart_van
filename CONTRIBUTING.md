@@ -30,6 +30,14 @@ idf.py set-target esp32s3
 idf.py build
 ```
 
+Or build in Docker, with no native installation:
+
+```bash
+./scripts/idf_docker.sh firmware/rear_eink build
+```
+
+To change the ESP-IDF version, update [scripts/esp_idf_version.txt](scripts/esp_idf_version.txt) and the image tag in [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json) in the same change.
+
 ## Test
 
 The host tests use Unity on the ESP-IDF `linux` target. The test commands are added with the first test in `tests/host/`. Run the host tests before you send a change.
