@@ -50,7 +50,11 @@ install_packages() {
 
   mapfile -t packages < <(read_packages)
   printf 'Installing %d system packages with apt-get (needs sudo).\n' "${#packages[@]}"
-  sudo apt-get update
+  if ! sudo apt-get update; then
+    printf 'warning: apt-get update reported errors. A third-party repository is often the cause.\n' >&2
+    printf 'The package install continues with the package lists that did update.\n' >&2
+  fi
+
   sudo apt-get install -y "${packages[@]}"
 }
 

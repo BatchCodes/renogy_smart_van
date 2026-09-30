@@ -152,6 +152,7 @@ The planned options are:
 | The port for a CH340 board disappears after a few seconds (Ubuntu) | The `brltty` braille service takes the CH340 USB ID. | Run `sudo apt-get remove brltty` if you do not use a braille display. |
 | `Failed to connect to ESP32` during flash | The board is not in download mode. | Hold the `BOOT` button, push and release the `RST` button, then release `BOOT`. Flash again. |
 | No serial port appears | The USB cable supplies power only. | Use a USB data cable. |
+| `apt-get update` shows `is not signed` or `OpenPGP signature verification failed` for a third-party repository | That repository uses an old signing key. Debian 13 rejects SHA1 keys. | The install script shows a warning and continues. To remove the error, disable that repository in `/etc/apt/sources.list.d/`. |
 | `idf.py: command not found` | ESP-IDF is not loaded in this terminal. | Run `. ~/esp/esp-idf/export.sh`. |
 
 ## Credits
