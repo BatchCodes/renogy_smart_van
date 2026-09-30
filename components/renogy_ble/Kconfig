@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+menu "Renogy BT-2"
+
+    config RENOGY_BLE_NAME_PREFIX
+        string "BT-2 name prefix"
+        default "BT-TH-"
+        help
+            The source connects to the first device whose BLE name starts with
+            this text. The BT-2 advertises a name like "BT-TH-B00FXXXX".
+
+    config RENOGY_BLE_MAC_ADDRESS
+        string "BT-2 MAC address (optional)"
+        default ""
+        help
+            Connect only to this BT-2, for example "80:6F:B0:0F:12:34". Leave it
+            empty to connect to the first BT-2 found. Set it if other vans with a
+            BT-2 can be near, for example at a campsite. The source logs the
+            address of each BT-2 it finds.
+
+    config RENOGY_BLE_DEVICE_ID
+        int "Modbus device ID"
+        range 1 255
+        default 255
+        help
+            255 reaches the charger that is directly connected to the BT-2. Change
+            it only for a hub or a daisy chain of Renogy devices.
+
+    config RENOGY_BLE_POLL_INTERVAL_S
+        int "Poll interval (seconds)"
+        range 1 3600
+        default 5
+        help
+            Time between two reads of the charger values.
+
+    config RENOGY_BLE_RESPONSE_TIMEOUT_MS
+        int "Response timeout (milliseconds)"
+        range 500 30000
+        default 3000
+
+    config RENOGY_BLE_MAX_FAILED_READS
+        int "Disconnect after this many failed reads in a row"
+        range 1 100
+        default 3
+
+endmenu

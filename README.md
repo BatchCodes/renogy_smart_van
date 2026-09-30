@@ -175,14 +175,27 @@ The options are in the "Rear e-paper display" menu:
 | Full refresh of an unchanged image after | The display refreshes only when the image changes, and does a full refresh after this time with no change. |
 | Full refresh after this many fast refreshes | A full refresh removes ghosting, but the panel flashes. |
 
-These options are planned:
+The "Renogy BT-2" menu sets the BLE connection:
 
 | Option | Purpose |
 | --- | --- |
-| Data source | Fake data (display test with no BT-2) or the BT-2. |
-| BT-2 name prefix | The BLE name to look for. |
-| BT-2 MAC address | Optional. It stops the unit from connecting to another BT-2 nearby, for example at a campsite. |
-| Poll interval | Time between two reads from the BT-2. |
+| BT-2 name prefix | The source connects to the first device whose name starts with this text. The default is `BT-TH-`. |
+| BT-2 MAC address | Optional. Connect only to this BT-2, for example at a campsite with other vans. The log shows the address of each BT-2 found. |
+| Modbus device ID | 255 reaches the charger connected to the BT-2. Change it only for a hub or a daisy chain. |
+| Poll interval | Time between two reads of the charger values. The default is 5 s. |
+| Response timeout, failed reads | When to count a read as failed, and when to disconnect and scan again. |
+
+## Test the BT-2 Connection
+
+`firmware/ble_probe/` connects to the BT-2 and logs each raw response in hex and each decoded reading. It needs no display, so it runs on any ESP32 board with BLE. Use it to check the connection and the values before you use the display.
+
+```bash
+cd firmware/ble_probe
+idf.py build
+idf.py -p /dev/ttyUSB0 flash monitor
+```
+
+Compare the logged values with the Renogy DC Home app. The BT-2 support is new and not yet tested with a real BT-2.
 
 ## Visual Studio Code
 
