@@ -185,6 +185,7 @@ The planned options are:
 | `Failed to connect to ESP32` during flash | The board is not in download mode. | Hold the `BOOT` button, push and release the `RST` button, then release `BOOT`. Flash again. |
 | No serial port appears | The USB cable supplies power only. | Use a USB data cable. |
 | `apt-get update` shows `is not signed` or `OpenPGP signature verification failed` for a third-party repository | That repository uses an old signing key. Debian 13 rejects SHA1 keys. | The install script shows a warning and continues. To remove the error, disable that repository in `/etc/apt/sources.list.d/`. |
+| CMake reports that the cache directory is different, or that the source does not match | The `build/` directory was made in Docker and is now used natively, or the opposite. The paths in the container are different. | Delete the `build/` directory in the app, then build again. |
 | `idf.py: command not found` | ESP-IDF is not loaded in this terminal. | Run `. ~/esp/esp-idf/export.sh`. |
 
 ## Credits
