@@ -8,6 +8,7 @@
 #include "charging_data/fake_source.hpp"
 #include "charging_display.hpp"
 #include "esp_log.h"
+#include "renogy_ble/bt2_ble_source.hpp"
 #include "sdkconfig.h"
 #include "test_pattern.hpp"
 
@@ -41,6 +42,11 @@ extern "C" void app_main() {
 
 #if CONFIG_REAR_EINK_MODE_TEST_PATTERN
     rear_eink::run_test_pattern(*device);
+#elif CONFIG_REAR_EINK_SOURCE_BT2
+    auto& source = renogy_ble::Bt2BleSource::instance();
+    ESP_ERROR_CHECK(source.start());
+    ESP_LOGI(kTag, "Data source: Renogy BT-2");
+    rear_eink::run_charging_display(*device, source);
 #else
     static charging_data::FakeSource source(kFakeSourceConfig);
     ESP_LOGI(kTag, "Data source: fake");

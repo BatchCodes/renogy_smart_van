@@ -6,7 +6,7 @@ The first target is a van with a Renogy RBC50D1S DC-DC charger with MPPT. The di
 
 `van_sensors` is a working name. The project gets a final name when it is published.
 
-> **Status: early development.** `firmware/rear_eink/` shows the charging layout with fake data. It works on a Heltec Wireless Paper V1.1.1/V1.2. It does not read the BT-2 yet. V1.0 and V1.1 boards are not tested yet.
+> **Status: early development.** `firmware/rear_eink/` shows the charging layout. It works with fake data on a Heltec Wireless Paper V1.1.1/V1.2. The BT-2 data source is written from the reference projects but is not yet tested with a real BT-2. V1.0 and V1.1 boards are not tested yet.
 
 ## How It Works
 
@@ -164,7 +164,8 @@ The options are in the "Rear e-paper display" menu:
 
 | Option | Purpose |
 | --- | --- |
-| Display mode | "Charging data" is the normal display. Until the BT-2 support exists, it shows fake data from a simulated five minute day. The values change at every refresh. "Test pattern" draws a fixed pattern and logs the refresh times. Use it to bring up a board. |
+| Display mode | "Charging data" is the normal display, from the selected data source. "Test pattern" draws a fixed pattern and logs the refresh times. Use it to bring up a board. |
+| Data source | "Fake data" simulates a five minute day, with values that change at every refresh. Use it to test the display with no BT-2. "Renogy BT-2" reads the charger. |
 | Fake data: simulate BT-2 outages | The fake source stops sending for three minutes of each five minute day, so the stale box and the offline screen appear. Off by default. |
 | Panel model | Heltec Wireless Paper hardware version. "Auto detect" works for V1.1, V1.1.1 and V1.2. Select V1.0 manually. |
 | Display rotation | Turns the image by 180 degrees. |

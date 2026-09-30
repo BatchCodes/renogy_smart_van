@@ -5,8 +5,8 @@ menu "Rear e-paper display"
         prompt "Display mode"
         default REAR_EINK_MODE_CHARGING
         help
-            Charging data: the normal display. Until the BT-2 source exists, the
-            data comes from the fake source, which simulates a five minute day.
+            Charging data: the normal display, from the source that "Data source"
+            selects.
 
             Test pattern: draws a fixed pattern and a counter, and logs the refresh
             times. Use it to bring up a new board or panel.
@@ -17,10 +17,25 @@ menu "Rear e-paper display"
             bool "Test pattern"
     endchoice
 
+    choice REAR_EINK_SOURCE
+        prompt "Data source"
+        default REAR_EINK_SOURCE_FAKE
+        depends on REAR_EINK_MODE_CHARGING
+        help
+            Fake: simulated values, for testing the display with no BT-2.
+            Renogy BT-2: live values from the charger. Set the BLE options in the
+            "Renogy BT-2" menu.
+
+        config REAR_EINK_SOURCE_FAKE
+            bool "Fake data"
+        config REAR_EINK_SOURCE_BT2
+            bool "Renogy BT-2"
+    endchoice
+
     config REAR_EINK_FAKE_OUTAGES
         bool "Fake data: simulate BT-2 outages"
         default n
-        depends on REAR_EINK_MODE_CHARGING
+        depends on REAR_EINK_SOURCE_FAKE
         help
             The fake source simulates a five minute day: sunrise, noon, a drive
             and night. The values change at every refresh. With this option, the
