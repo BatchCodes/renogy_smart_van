@@ -4,3 +4,4 @@ dependencies:
   idf: ">=6.1"
   waveshare/esp32_p4_wifi6_touch_lcd_4_3: "==1.0.1"
   espressif/esp_hosted: "==3.0.9"
+  espressif/usb_host_uvc: "==2.6.0"

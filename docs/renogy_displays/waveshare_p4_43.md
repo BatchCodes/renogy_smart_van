@@ -24,7 +24,7 @@ The facts come from the Waveshare schematic and BSP, the Espressif `esp-hosted-m
 | `espressif/esp_lvgl_adapter` | 0.6.x (through the BSP) | LVGL port, rotation, tear avoidance. |
 | `lvgl/lvgl` | 9.5.0 (through the BSP) | User interface. |
 | `espressif/esp_hosted` | 3.0.9 | BLE through the C6. NimBLE runs on the P4, the controller on the C6. |
-| `espressif/usb_host_uvc` | 2.6.0 | USB camera (planned, Phase 3). |
+| `espressif/usb_host_uvc` | 2.6.0 | USB camera: MJPEG from the CVBS capture adapter, decoded by the P4 hardware JPEG engine. |
 
 The versions are pinned in `firmware/cab_dash/main/idf_component.yml`.
 
@@ -60,6 +60,15 @@ The SDIO pins (P4 GPIO14 to GPIO19, C6 reset on GPIO54) match the `esp_hosted` d
 ## USB Camera Power
 
 The "USB" Type-C port has 5.1 kΩ pull-down resistors on CC and a reverse-current block on VBUS. This means the board probably **does not supply 5 V** to a device on that port. The USB capture adapter for the reversing camera then needs power from a powered hub or an OTG Y-cable. Check this on the board before you buy cables.
+
+## Camera Pipeline
+
+The capture adapter sends MJPEG frames over USB. A camera task decodes each frame with the ESP32-P4 JPEG engine into RGB565. There are three frame buffers: the decoder writes to a buffer that is neither the newest frame nor the frame on screen, so the screen never shows a half-written frame. An LVGL timer shows each new frame, scaled to fit 800 × 480. The camera test mode logs the frame rate and the decode time every 5 s.
+
+These items are not verified on hardware:
+
+- the colour byte order of the decoded RGB565 (`JPEG_DEC_RGB_ELEMENT_ORDER_BGR`). If red and blue are swapped on the screen, change it to `RGB` in `firmware/cab_dash/main/camera.cpp`.
+- the frame rate with the LVGL software scaling. A 720 × 576 frame is scaled to 600 × 480 on the CPU. The P4 pixel processing accelerator (PPA) can do this if the frame rate is too low.
 
 ## Header Pins
 

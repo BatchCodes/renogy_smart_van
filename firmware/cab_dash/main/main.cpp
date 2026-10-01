@@ -3,6 +3,9 @@
 // Cab dashboard app for the Waveshare ESP32-P4-WIFI6-Touch-LCD-4.3.
 
 #include "ble.hpp"
+#include "camera.hpp"
+#include "camera_screen.hpp"
+#include "display.hpp"
 #include "charging_data/fake_source.hpp"
 #include "dashboard.hpp"
 #include "data_hub.hpp"
@@ -49,6 +52,19 @@ charging_data::ChargingDataSource& start_source() {
 #endif
 }
 
+#if CONFIG_CAB_DASH_MODE_CAMERA_TEST
+void start_camera_test() {
+    if (cab_dash::Camera::instance().start() != ESP_OK) {
+        ESP_LOGE(kTag, "Camera start failed");
+        return;
+    }
+    static cab_dash::CameraScreen screen;
+    const cab_dash::DisplayLock lock;
+    screen.create(nullptr, nullptr);
+    lv_screen_load(screen.view().screen());
+}
+#endif
+
 }  // namespace
 
 extern "C" void app_main() {
@@ -70,5 +86,7 @@ extern "C" void app_main() {
 
 #if CONFIG_CAB_DASH_MODE_DASHBOARD
     cab_dash::start_dashboard(hub);
+#elif CONFIG_CAB_DASH_MODE_CAMERA_TEST
+    start_camera_test();
 #endif
 }

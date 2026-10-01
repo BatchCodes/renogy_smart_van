@@ -8,12 +8,42 @@ menu "Cab dashboard"
             Dashboard: the charging dashboard.
             Test screen: the board bring-up screen with a tap counter and a colour
             bar. Use it to check the display, the rotation and the touch input.
+            Camera test: the camera screen only, with frame rate logs. Use it to
+            check the USB capture adapter.
 
         config CAB_DASH_MODE_DASHBOARD
             bool "Dashboard"
         config CAB_DASH_MODE_TEST_SCREEN
             bool "Test screen"
+        config CAB_DASH_MODE_CAMERA_TEST
+            bool "Camera test"
     endchoice
+
+    choice CAB_DASH_CAMERA_RESOLUTION
+        prompt "Camera resolution"
+        default CAB_DASH_CAMERA_640X480
+        help
+            The MJPEG resolution to ask the USB capture adapter for. List the
+            adapter's formats on a PC with "v4l2-ctl --list-formats-ext". A PAL
+            camera gives 720 x 576.
+
+        config CAB_DASH_CAMERA_640X480
+            bool "640 x 480"
+        config CAB_DASH_CAMERA_720X480
+            bool "720 x 480"
+        config CAB_DASH_CAMERA_720X576
+            bool "720 x 576 (PAL)"
+    endchoice
+
+    config CAB_DASH_CAMERA_WIDTH
+        int
+        default 720 if CAB_DASH_CAMERA_720X480 || CAB_DASH_CAMERA_720X576
+        default 640
+
+    config CAB_DASH_CAMERA_HEIGHT
+        int
+        default 576 if CAB_DASH_CAMERA_720X576
+        default 480
 
     config CAB_DASH_BACKLIGHT_TIMEOUT_S
         int "Backlight off after no touch for (seconds, 0 = never)"

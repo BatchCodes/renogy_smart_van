@@ -227,7 +227,8 @@ Use the Type-C port labelled "USB TO UART". The options are in the "Cab dashboar
 
 | Option | Purpose |
 | --- | --- |
-| Screen | "Dashboard" is the normal screen. "Test screen" shows the resolution, a tap counter and a colour bar, to check the display and the touch input. |
+| Screen | "Dashboard" is the normal screen. "Test screen" shows the resolution, a tap counter and a colour bar, to check the display and the touch input. "Camera test" shows only the camera and logs the frame rate and the decode time, to check the USB capture adapter. |
+| Camera resolution | The MJPEG resolution to ask the capture adapter for: 640 × 480, 720 × 480 or 720 × 576 (PAL). |
 | Data source | "Fake data" or "Renogy BT-2". The BT-2 options are in the "Renogy BT-2" menu. |
 | Backlight off after no touch for | Turns the backlight off after this time with no touch. A touch turns it on again. 0 keeps it on. |
 | Display rotation | 90 or 270 degrees, for the mounting direction. |

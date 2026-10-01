@@ -110,6 +110,7 @@ run_all() {
   build_app cab_dash
   build_app cab_dash bt2
   build_app cab_dash test_screen
+  build_app cab_dash camera_test
 }
 
 main() {

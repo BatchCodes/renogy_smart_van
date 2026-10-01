@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "cab_dashboard/camera_view.hpp"
 #include "cab_dashboard/dashboard_view.hpp"
 #include "cab_ui/dashboard_text.hpp"
 #include "cab_ui/power_history.hpp"
@@ -110,5 +111,27 @@ int main(int argc, char** argv) {
 
     view.update(cab_ui::format_dashboard(cab_ui::DataSnapshot{}), cab_ui::PowerHistory(120, 30'000));
     render(out_dir + "/waiting.ppm");
+
+    // Camera screen with PAL-sized colour bars in place of a camera frame.
+    constexpr std::uint32_t kCameraWidth = 720;
+    constexpr std::uint32_t kCameraHeight = 576;
+    std::vector<std::uint16_t> bars(kCameraWidth * kCameraHeight);
+    constexpr std::uint16_t kBarColours[] = {0xFFFF, 0xFFE0, 0x07FF, 0x07E0, 0xF81F, 0xF800, 0x001F, 0x0000};
+    for (std::uint32_t y = 0; y < kCameraHeight; ++y) {
+        for (std::uint32_t x = 0; x < kCameraWidth; ++x) {
+            bars[y * kCameraWidth + x] = kBarColours[x * 8 / kCameraWidth];
+        }
+    }
+    cab_dashboard::CameraView camera;
+    camera.create(nullptr, nullptr);
+    lv_screen_load(camera.screen());
+    camera.set_signal(true);
+    camera.set_reverse(true);
+    camera.show_frame(reinterpret_cast<const std::uint8_t*>(bars.data()), kCameraWidth, kCameraHeight);
+    render(out_dir + "/camera_reverse.ppm");
+
+    camera.set_signal(false);
+    camera.set_reverse(false);
+    render(out_dir + "/camera_no_signal.ppm");
     return 0;
 }

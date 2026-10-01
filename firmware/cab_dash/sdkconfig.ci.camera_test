@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# CI variant: camera test screen at 720 x 576.
+CONFIG_CAB_DASH_MODE_CAMERA_TEST=y
+CONFIG_CAB_DASH_CAMERA_720X576=y

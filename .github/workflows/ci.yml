@@ -59,6 +59,8 @@ jobs:
             variant: bt2
           - app: cab_dash
             variant: test_screen
+          - app: cab_dash
+            variant: camera_test
     steps:
       - uses: actions/checkout@v4
       - name: Build
