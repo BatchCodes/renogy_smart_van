@@ -211,6 +211,31 @@ idf.py -p /dev/ttyUSB0 flash monitor
 
 Compare the logged values with the Renogy DC Home app. The BT-2 support is new and not yet tested with a real BT-2.
 
+## Cab Dashboard
+
+`firmware/cab_dash/` is a touch dashboard for the cab, for the [Waveshare ESP32-P4-WIFI6-Touch-LCD-4.3](https://www.waveshare.com/product/iot-communication/short-range-wireless/esp32-p4-wifi6-touch-lcd-4.3.htm). It shows the same charging data on four pages: solar, batteries, temperatures, and energy with a one-hour solar power chart. The status bar turns amber when the data is old and red when the BT-2 is offline.
+
+> **Not tested on hardware yet.** Read [Waveshare ESP32-P4 board notes](docs/renogy_displays/waveshare_p4_43.md) before the first flash. It explains how to check the chip revision and the ESP32-C6 firmware.
+
+```bash
+cd firmware/cab_dash
+idf.py build
+idf.py -p /dev/ttyACM0 flash monitor
+```
+
+Use the Type-C port labelled "USB TO UART". The options are in the "Cab dashboard" menu of `idf.py menuconfig`:
+
+| Option | Purpose |
+| --- | --- |
+| Screen | "Dashboard" is the normal screen. "Test screen" shows the resolution, a tap counter and a colour bar, to check the display and the touch input. |
+| Data source | "Fake data" or "Renogy BT-2". The BT-2 options are in the "Renogy BT-2" menu. |
+| Backlight off after no touch for | Turns the backlight off after this time with no touch. A touch turns it on again. 0 keeps it on. |
+| Display rotation | 90 or 270 degrees, for the mounting direction. |
+| Backlight brightness | In percent. |
+| Data poll interval, stale and offline timeouts | When the dashboard shows the data age or the offline message. |
+
+To see the dashboard pages with no board, run `./scripts/ci.sh previews`. Refer to [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Visual Studio Code
 
 1. Install the extension `espressif.esp-idf-extension`.

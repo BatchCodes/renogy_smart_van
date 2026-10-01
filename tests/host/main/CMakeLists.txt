@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 idf_component_register(
     SRCS "test_main.cpp" "test_latest_reading.cpp" "test_fake_source.cpp" "test_mono_gfx.cpp"
-         "test_eink_view.cpp" "test_renogy_protocol.cpp"
-    PRIV_REQUIRES unity charging_data mono_gfx eink_view renogy_protocol
+         "test_eink_view.cpp" "test_renogy_protocol.cpp" "test_cab_ui.cpp"
+    PRIV_REQUIRES unity charging_data mono_gfx eink_view renogy_protocol cab_ui
     WHOLE_ARCHIVE
 )
 

@@ -21,6 +21,22 @@ jobs:
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
           scripts/ci.sh host-tests
 
+  previews:
+    name: Dashboard previews
+    runs-on: ubuntu-latest
+    container: espressif/idf:v6.1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render previews
+        shell: bash
+        run: |
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+          scripts/ci.sh previews
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-previews
+          path: tools/lvgl_preview/build/previews/*.ppm
+
   build:
     name: Build ${{ matrix.app }} ${{ matrix.variant }}
     runs-on: ubuntu-latest
@@ -41,6 +57,8 @@ jobs:
             variant: ""
           - app: cab_dash
             variant: bt2
+          - app: cab_dash
+            variant: test_screen
     steps:
       - uses: actions/checkout@v4
       - name: Build

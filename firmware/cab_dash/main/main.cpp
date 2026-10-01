@@ -4,6 +4,7 @@
 
 #include "ble.hpp"
 #include "charging_data/fake_source.hpp"
+#include "dashboard.hpp"
 #include "data_hub.hpp"
 #include "bsp/esp-bsp.h"
 #include "esp_log.h"
@@ -56,7 +57,9 @@ extern "C" void app_main() {
         ESP_LOGE(kTag, "Display start failed");
         return;
     }
+#if CONFIG_CAB_DASH_MODE_TEST_SCREEN
     cab_dash::show_test_screen();
+#endif
 
     charging_data::ChargingDataSource& source = start_source();
     static cab_dash::DataHub hub(source, {
@@ -64,4 +67,8 @@ extern "C" void app_main() {
                                              .offline_after_ms = CONFIG_CAB_DASH_OFFLINE_AFTER_S * 1000U,
                                          });
     hub.start(CONFIG_CAB_DASH_POLL_INTERVAL_MS);
+
+#if CONFIG_CAB_DASH_MODE_DASHBOARD
+    cab_dash::start_dashboard(hub);
+#endif
 }

@@ -16,7 +16,8 @@ Usage: scripts/ci.sh COMMAND
 Commands:
   host-tests                Build and run the host tests.
   build APP [VARIANT]       Build firmware/APP. VARIANT selects firmware/APP/sdkconfig.ci.VARIANT.
-  all                       Run the host tests and build every app and variant.
+  previews                  Render the cab dashboard previews to tools/lvgl_preview/build/previews.
+  all                       Run the host tests, render the previews and build every app and variant.
 USAGE
 }
 
@@ -89,14 +90,26 @@ build_app() {
     build
 }
 
+render_previews() {
+  local build_dir="${REPO_DIR}/tools/lvgl_preview/build"
+
+  install_host_test_packages
+  cmake -S "${REPO_DIR}/tools/lvgl_preview" -B "${build_dir}" -DCMAKE_BUILD_TYPE=Release
+  cmake --build "${build_dir}" --parallel
+  mkdir -p "${build_dir}/previews"
+  "${build_dir}/lvgl_preview" "${build_dir}/previews"
+}
+
 run_all() {
   run_host_tests
+  render_previews
   build_app rear_eink
   build_app rear_eink bt2
   build_app rear_eink test_pattern
   build_app ble_probe
   build_app cab_dash
   build_app cab_dash bt2
+  build_app cab_dash test_screen
 }
 
 main() {
@@ -112,6 +125,9 @@ main() {
         return 1
       fi
       build_app "$2" "${3:-}"
+      ;;
+    previews)
+      render_previews
       ;;
     all)
       run_all

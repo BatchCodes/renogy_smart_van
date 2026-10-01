@@ -81,6 +81,16 @@ Start each new source file with an SPDX licence header:
 
 In a shell script, use `# SPDX-License-Identifier: GPL-3.0-or-later` on the line after the shebang.
 
+## Dashboard Previews
+
+The cab dashboard (`components/cab_dashboard`) uses LVGL and no ESP-IDF headers. `tools/lvgl_preview` builds it on your computer and writes a PPM image of each page and state at 800 × 480:
+
+```bash
+./scripts/ci.sh previews
+```
+
+The images are in `tools/lvgl_preview/build/previews/`. The tool uses the LVGL source that a `firmware/cab_dash` build downloads. Without it, the tool downloads the same LVGL version. CI also renders the previews and attaches them to each run as the `dashboard-previews` artifact.
+
 ## Fonts
 
 The bitmap fonts in `components/mono_gfx/src/fonts.cpp` are generated from DejaVu Sans. Do not edit that file. To change a font size or add a font, edit `FONT_SPECS` in `tools/fonts/generate_fonts.py` and run it. It needs Pillow (`python3-pil`) and the `fonts-dejavu-core` package:

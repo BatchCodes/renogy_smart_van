@@ -43,7 +43,7 @@ void DataHub::poll_once(std::uint64_t time_ms) {
     reading_.update(*data, time_ms);
 }
 
-DataSnapshot DataHub::snapshot(std::uint64_t time_ms) {
+cab_ui::DataSnapshot DataHub::snapshot(std::uint64_t time_ms) {
     const std::lock_guard lock(mutex_);
     return {reading_.data(), reading_.link_state(time_ms), reading_.age_ms(time_ms)};
 }

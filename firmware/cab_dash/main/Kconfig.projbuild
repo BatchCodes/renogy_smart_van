@@ -1,6 +1,29 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 menu "Cab dashboard"
 
+    choice CAB_DASH_MODE
+        prompt "Screen"
+        default CAB_DASH_MODE_DASHBOARD
+        help
+            Dashboard: the charging dashboard.
+            Test screen: the board bring-up screen with a tap counter and a colour
+            bar. Use it to check the display, the rotation and the touch input.
+
+        config CAB_DASH_MODE_DASHBOARD
+            bool "Dashboard"
+        config CAB_DASH_MODE_TEST_SCREEN
+            bool "Test screen"
+    endchoice
+
+    config CAB_DASH_BACKLIGHT_TIMEOUT_S
+        int "Backlight off after no touch for (seconds, 0 = never)"
+        range 0 86400
+        default 300
+        help
+            The cab unit is on only when the engine runs. Turn the backlight off
+            after this time with no touch, so it does not dazzle at night. A touch
+            turns it on again.
+
     choice CAB_DASH_ROTATION
         prompt "Display rotation"
         default CAB_DASH_ROTATION_90

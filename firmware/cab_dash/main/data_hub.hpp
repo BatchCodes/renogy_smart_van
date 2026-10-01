@@ -6,16 +6,10 @@
 #include <optional>
 
 #include "charging_data/charging_data.hpp"
+#include "cab_ui/dashboard_text.hpp"
 #include "charging_data/latest_reading.hpp"
 
 namespace cab_dash {
-
-// What the user interface needs to draw one frame.
-struct DataSnapshot {
-    std::optional<charging_data::ChargingData> data;
-    charging_data::LinkState link_state = charging_data::LinkState::offline;
-    std::optional<std::uint64_t> age_ms;
-};
 
 // Polls a source in its own task and keeps the latest reading. The user interface
 // takes a snapshot from the LVGL task. Only the snapshot crosses tasks, under a mutex.
@@ -27,7 +21,7 @@ public:
     // Starts the poll task. Call once.
     void start(std::uint32_t poll_interval_ms);
 
-    [[nodiscard]] DataSnapshot snapshot(std::uint64_t now_ms);
+    [[nodiscard]] cab_ui::DataSnapshot snapshot(std::uint64_t now_ms);
 
     // Called by the poll task.
     void poll_once(std::uint64_t now_ms);

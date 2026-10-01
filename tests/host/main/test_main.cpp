@@ -12,5 +12,6 @@ int main() {
     run_mono_gfx_tests();
     run_eink_view_tests();
     run_renogy_protocol_tests();
+    run_cab_ui_tests();
     return UNITY_END();
 }

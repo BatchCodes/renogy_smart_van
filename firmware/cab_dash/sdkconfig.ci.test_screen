@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# CI variant: board bring-up test screen.
+CONFIG_CAB_DASH_MODE_TEST_SCREEN=y

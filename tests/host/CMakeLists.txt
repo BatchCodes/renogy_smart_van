@@ -7,6 +7,7 @@ set(EXTRA_COMPONENT_DIRS
     "${CMAKE_CURRENT_LIST_DIR}/../../components/mono_gfx"
     "${CMAKE_CURRENT_LIST_DIR}/../../components/eink_view"
     "${CMAKE_CURRENT_LIST_DIR}/../../components/renogy_protocol"
+    "${CMAKE_CURRENT_LIST_DIR}/../../components/cab_ui"
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
