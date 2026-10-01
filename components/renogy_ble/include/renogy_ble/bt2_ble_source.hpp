@@ -24,8 +24,13 @@ public:
     // Only one instance can exist, because NimBLE has one host.
     static Bt2BleSource& instance();
 
+    // Runs after NVS starts and before NimBLE starts. A board whose BLE controller is
+    // on a co-processor (for example the ESP32-C6 next to an ESP32-P4) connects it
+    // here. Other boards pass nothing.
+    using BeforeNimbleInit = esp_err_t (*)();
+
     // Starts NVS (needed for the PHY calibration data), NimBLE and the host task.
-    esp_err_t start();
+    esp_err_t start(BeforeNimbleInit before_nimble_init = nullptr);
 
     std::optional<charging_data::ChargingData> poll(std::uint64_t now_ms) override;
 

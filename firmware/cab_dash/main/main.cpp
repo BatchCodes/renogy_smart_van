@@ -2,8 +2,10 @@
 //
 // Cab dashboard app for the Waveshare ESP32-P4-WIFI6-Touch-LCD-4.3.
 
+#include "ble.hpp"
 #include "bsp/esp-bsp.h"
 #include "esp_log.h"
+#include "renogy_ble/bt2_ble_source.hpp"
 #include "sdkconfig.h"
 #include "test_screen.hpp"
 
@@ -37,4 +39,9 @@ extern "C" void app_main() {
         return;
     }
     cab_dash::show_test_screen();
+
+    auto& source = renogy_ble::Bt2BleSource::instance();
+    if (source.start(cab_dash::connect_c6_ble_controller) != ESP_OK) {
+        ESP_LOGE(kTag, "BLE start failed. The dashboard continues without BT-2 data.");
+    }
 }

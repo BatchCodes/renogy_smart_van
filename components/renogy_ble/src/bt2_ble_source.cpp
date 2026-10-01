@@ -347,6 +347,9 @@ void on_discovery(const ble_gap_disc_desc& desc) {
         return;
     }
     const std::string_view name(reinterpret_cast<const char*>(fields.name), fields.name_len);
+#if CONFIG_RENOGY_BLE_LOG_ALL_DEVICES
+    ESP_LOGI(kTag, "Seen %.*s, RSSI %d dBm", static_cast<int>(name.size()), name.data(), desc.rssi);
+#endif
     constexpr std::string_view kPrefix = CONFIG_RENOGY_BLE_NAME_PREFIX;
     if (!name.starts_with(kPrefix)) {
         return;
@@ -457,7 +460,7 @@ Bt2BleSource& Bt2BleSource::instance() {
     return source;
 }
 
-esp_err_t Bt2BleSource::start() {
+esp_err_t Bt2BleSource::start(BeforeNimbleInit before_nimble_init) {
     if (started_) {
         return ESP_OK;
     }
@@ -468,6 +471,9 @@ esp_err_t Bt2BleSource::start() {
         result = nvs_flash_init();
     }
     ESP_RETURN_ON_ERROR(result, kTag, "NVS");
+    if (before_nimble_init != nullptr) {
+        ESP_RETURN_ON_ERROR(before_nimble_init(), kTag, "BLE controller set-up");
+    }
     ESP_RETURN_ON_ERROR(nimble_port_init(), kTag, "NimBLE");
 
     ble_hs_cfg.sync_cb = on_sync;

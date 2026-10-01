@@ -23,10 +23,12 @@ The facts come from the Waveshare schematic and BSP, the Espressif `esp-hosted-m
 | `waveshare/esp32_p4_wifi6_touch_lcd_4_3` | 1.0.1 | Board support: display, touch, backlight, USB host power. |
 | `espressif/esp_lvgl_adapter` | 0.6.x (through the BSP) | LVGL port, rotation, tear avoidance. |
 | `lvgl/lvgl` | 9.5.0 (through the BSP) | User interface. |
-| `espressif/esp_hosted` | 3.0.9 | BLE through the C6 (planned, step 1.2). |
+| `espressif/esp_hosted` | 3.0.9 | BLE through the C6. NimBLE runs on the P4, the controller on the C6. |
 | `espressif/usb_host_uvc` | 2.6.0 | USB camera (planned, Phase 3). |
 
 The versions are pinned in `firmware/cab_dash/main/idf_component.yml`.
+
+The app partition is 8 MB (`firmware/cab_dash/partitions.csv`), for the BSP, LVGL, BLE and the camera code.
 
 The display uses three frame buffers in PSRAM (about 2.3 MB) to avoid tearing. The 90 degree rotation is a CPU copy on each update.
 
@@ -48,7 +50,7 @@ idf.py -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.rev_lt_v3" build
 
 BLE on the P4 needs the `esp_hosted` slave firmware on the C6, with Bluetooth enabled. The firmware that Waveshare installs on the C6 is not known. It is probably an old `esp_hosted` 1.x version, and some early boards reportedly shipped without Bluetooth in the C6 firmware.
 
-The cab app logs the C6 firmware version at start-up (step 1.2). If the C6 firmware is too old or has no Bluetooth, flash a new one. There are two methods:
+The cab app logs the C6 firmware version at start-up (`C6 esp_hosted firmware x.y.z`). If the log shows `C6 BLE controller` as an error, the C6 firmware has no Bluetooth or is too old. If the C6 firmware is too old or has no Bluetooth, flash a new one. There are two methods:
 
 - Over the air from the P4, with the `esp-hosted-mcu` co-processor OTA example.
 - With a USB-TTL adapter on header P1 "C6-UART" (TX, RX, IO9, GND). Connect IO9 to GND, and hold the P4 BOOT key at power on, so the P4 cannot reset the C6.

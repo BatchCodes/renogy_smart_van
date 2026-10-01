@@ -197,6 +197,7 @@ The "Renogy BT-2" menu sets the BLE connection:
 | Modbus device ID | 255 reaches the charger connected to the BT-2. Change it only for a hub or a daisy chain. |
 | Poll interval | Time between two reads of the charger values. The default is 5 s. |
 | Response timeout, failed reads | When to count a read as failed, and when to disconnect and scan again. |
+| Log every named BLE device found | Logs each named device in the scan, not only the BT-2. Use it to check that BLE works, or to find the BT-2 name. |
 
 ## Test the BT-2 Connection
 

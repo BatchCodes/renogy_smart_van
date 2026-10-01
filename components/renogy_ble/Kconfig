@@ -37,6 +37,13 @@ menu "Renogy BT-2"
         range 500 30000
         default 3000
 
+    config RENOGY_BLE_LOG_ALL_DEVICES
+        bool "Log every named BLE device found"
+        default n
+        help
+            Logs the name and RSSI of each named device in the scan, not only the
+            BT-2. Use it to check that BLE works, or to find the BT-2 name.
+
     config RENOGY_BLE_MAX_FAILED_READS
         int "Disconnect after this many failed reads in a row"
         range 1 100
