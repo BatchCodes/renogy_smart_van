@@ -1,6 +1,6 @@
-# Contributing to the Renogy BT-2 E-paper Display
+# Contributing to Renogy Smart Van
 
-This document tells you how to build and test the project, which code style to use, and how to add a new board or a new Renogy device. Install the tools first. Refer to the installation section in [README.md](README.md).
+Send changes as pull requests to [github.com/BatchCodes/renogy_smart_van](https://github.com/BatchCodes/renogy_smart_van). Report a problem or a new board as an issue. This document tells you how to build and test the project, which code style to use, and how to add a new board or a new Renogy device. Install the tools first. Refer to the installation section in [README.md](README.md).
 
 ## Repository Layout
 

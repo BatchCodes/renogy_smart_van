@@ -1,10 +1,10 @@
-# Renogy BT-2 E-paper Display
+# Renogy Smart Van
 
 This project is ESP32 firmware that shows live data from a Renogy solar or DC-DC charger on a small e-paper display. The firmware connects to the charger's Renogy BT-2 Bluetooth module over Bluetooth Low Energy (BLE). The official Renogy DC Home app continues to work at the same time.
 
 The first target is a van with a Renogy RBC50D1S DC-DC charger with MPPT. The display unit is in the sleeping area, so it uses reflective e-paper with no light. It updates 24 hours a day from a 5 V USB supply.
 
-`van_sensors` is a working name. The project gets a final name when it is published.
+The source code is at [github.com/BatchCodes/renogy_smart_van](https://github.com/BatchCodes/renogy_smart_van). Report problems and ideas as GitHub issues.
 
 > **Status: early development.** `firmware/rear_eink/` shows the charging layout. It works with fake data on a Heltec Wireless Paper V1.1.1/V1.2. The BT-2 data source is written from the reference projects but is not yet tested with a real BT-2. V1.0 and V1.1 boards are not tested yet.
 
@@ -44,6 +44,15 @@ The BT-2 is a bridge between the charger's RS485 port and BLE. The firmware send
 - Optional: [Visual Studio Code](https://code.visualstudio.com/) with the Espressif ESP-IDF extension.
 - Optional: nRF Connect for Mobile on a phone, to inspect the BT-2.
 - Alternative to the native tools: Docker. Refer to [Build with Docker](#build-with-docker).
+
+## Get the Code
+
+```bash
+git clone https://github.com/BatchCodes/renogy_smart_van.git
+cd renogy_smart_van
+```
+
+Run all commands in this README from the repository root, unless a step says otherwise.
 
 ## Installation
 
