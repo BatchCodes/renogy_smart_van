@@ -16,22 +16,29 @@ enum class Page : std::uint8_t { solar, batteries, temperatures, energy };
 // in the LVGL task or under the LVGL lock.
 class DashboardView {
 public:
-    // Builds the widgets on the screen.
-    void create(lv_obj_t* screen);
+    using Callback = void (*)(void* context);
+
+    // Builds the widgets on the screen. on_camera_pressed runs when the user taps the
+    // "Camera" button. Without a callback, the button is hidden.
+    void create(lv_obj_t* screen, Callback on_camera_pressed = nullptr, void* context = nullptr);
+
+    [[nodiscard]] lv_obj_t* screen() const { return screen_; }
 
     void update(const cab_ui::DashboardText& text, const cab_ui::PowerHistory& history);
 
     void show_page(Page page);
 
 private:
-    void create_status_bar(lv_obj_t* screen);
+    void create_status_bar(lv_obj_t* screen, Callback on_camera_pressed, void* context);
     void create_solar_page(lv_obj_t* page);
     void create_batteries_page(lv_obj_t* page);
     void create_temperatures_page(lv_obj_t* page);
     void create_energy_page(lv_obj_t* page);
     void update_chart(const cab_ui::PowerHistory& history);
 
+    lv_obj_t* screen_ = nullptr;
     lv_obj_t* status_bar_ = nullptr;
+    lv_obj_t* camera_button_ = nullptr;
     lv_obj_t* status_label_ = nullptr;
     lv_obj_t* state_label_ = nullptr;
     lv_obj_t* tabview_ = nullptr;

@@ -14,5 +14,6 @@ int main() {
     run_renogy_protocol_tests();
     run_cab_ui_tests();
     run_debouncer_tests();
+    run_mode_switch_tests();
     return UNITY_END();
 }

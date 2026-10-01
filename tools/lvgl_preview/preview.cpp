@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     lv_display_set_flush_cb(display, flush);
 
     cab_dashboard::DashboardView view;
-    view.create(lv_screen_active());
+    view.create(lv_screen_active(), [](void*) {}, nullptr);
 
     // An hour of fake solar data, one sample every 30 s, ending at noon of the fake day.
     const charging_data::FakeSource source({.day_length_ms = 14'400'000, .outage_length_ms = 0});

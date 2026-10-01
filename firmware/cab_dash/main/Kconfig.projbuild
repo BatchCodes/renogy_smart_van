@@ -45,6 +45,14 @@ menu "Cab dashboard"
         default 576 if CAB_DASH_CAMERA_720X576
         default 480
 
+    config CAB_DASH_CAMERA_HOLD_MS
+        int "Keep the camera after reverse ends (milliseconds)"
+        range 0 60000
+        default 2000
+        help
+            After reverse ends, the camera stays on screen for this time, then the
+            screen returns to the last manual selection.
+
     config CAB_DASH_REVERSE_GPIO
         int "Reverse input GPIO (-1 = no reverse input)"
         range -1 54

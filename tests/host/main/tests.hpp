@@ -8,3 +8,4 @@ void run_eink_view_tests();
 void run_renogy_protocol_tests();
 void run_cab_ui_tests();
 void run_debouncer_tests();
+void run_mode_switch_tests();

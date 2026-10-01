@@ -25,6 +25,19 @@ const lv_color_t kSolar = lv_color_hex(0xF5B041);
 const lv_color_t kStale = lv_color_hex(0xB9770E);
 const lv_color_t kOffline = lv_color_hex(0x922B21);
 
+struct CameraCallback {
+    DashboardView::Callback callback;
+    void* context;
+};
+
+CameraCallback camera_callback{};
+
+void on_camera(lv_event_t* /*event*/) {
+    if (camera_callback.callback != nullptr) {
+        camera_callback.callback(camera_callback.context);
+    }
+}
+
 lv_obj_t* make_label(lv_obj_t* parent, const lv_font_t* font, lv_color_t color, const char* text = "") {
     lv_obj_t* label = lv_label_create(parent);
     lv_obj_set_style_text_font(label, font, 0);
@@ -74,12 +87,13 @@ void style_page(lv_obj_t* page) {
 
 }  // namespace
 
-void DashboardView::create(lv_obj_t* screen) {
+void DashboardView::create(lv_obj_t* screen, Callback on_camera_pressed, void* context) {
+    screen_ = screen;
     lv_obj_set_style_bg_color(screen, kBackground, 0);
     lv_obj_set_style_bg_opa(screen, LV_OPA_COVER, 0);
     lv_obj_remove_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
 
-    create_status_bar(screen);
+    create_status_bar(screen, on_camera_pressed, context);
 
     tabview_ = lv_tabview_create(screen);
     lv_obj_set_size(tabview_, lv_pct(100), lv_display_get_vertical_resolution(nullptr) - kStatusBarHeight);
@@ -113,7 +127,7 @@ void DashboardView::create(lv_obj_t* screen) {
     lv_obj_center(offline_label_);
 }
 
-void DashboardView::create_status_bar(lv_obj_t* screen) {
+void DashboardView::create_status_bar(lv_obj_t* screen, Callback on_camera_pressed, void* context) {
     status_bar_ = lv_obj_create(screen);
     lv_obj_remove_style_all(status_bar_);
     lv_obj_set_size(status_bar_, lv_pct(100), kStatusBarHeight);
@@ -126,6 +140,17 @@ void DashboardView::create_status_bar(lv_obj_t* screen) {
     lv_obj_align(state_label_, LV_ALIGN_LEFT_MID, 0, 0);
     status_label_ = make_label(status_bar_, &lv_font_montserrat_20, kText, "Waiting for data");
     lv_obj_align(status_label_, LV_ALIGN_RIGHT_MID, 0, 0);
+
+    if (on_camera_pressed == nullptr) {
+        return;
+    }
+    camera_callback = {on_camera_pressed, context};
+    camera_button_ = lv_button_create(status_bar_);
+    lv_obj_set_size(camera_button_, 160, kStatusBarHeight - 6);
+    lv_obj_align(camera_button_, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_add_event_cb(camera_button_, on_camera, LV_EVENT_CLICKED, nullptr);
+    lv_obj_t* label = make_label(camera_button_, &lv_font_montserrat_20, kText, "Camera");
+    lv_obj_center(label);
 }
 
 void DashboardView::create_solar_page(lv_obj_t* page) {
