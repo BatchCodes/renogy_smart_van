@@ -1,5 +1,7 @@
 # Renogy Smart Van
 
+[![CI](https://github.com/BatchCodes/renogy_smart_van/actions/workflows/ci.yml/badge.svg)](https://github.com/BatchCodes/renogy_smart_van/actions/workflows/ci.yml)
+
 This project is ESP32 firmware that shows live data from a Renogy solar or DC-DC charger on a small e-paper display. The firmware connects to the charger's Renogy BT-2 Bluetooth module over Bluetooth Low Energy (BLE). The official Renogy DC Home app continues to work at the same time.
 
 The first target is a van with a Renogy RBC50D1S DC-DC charger with MPPT. The display unit is in the sleeping area, so it uses reflective e-paper with no light. It updates 24 hours a day from a 5 V USB supply.

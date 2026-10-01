@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Runs the same commands as scripts/ci.sh, in the ESP-IDF image at the version in
+# scripts/esp_idf_version.txt. Keep the image tag in sync with that file.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  host-tests:
+    name: Host tests
+    runs-on: ubuntu-latest
+    container: espressif/idf:v6.1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run host tests
+        shell: bash
+        run: |
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+          scripts/ci.sh host-tests
+
+  build:
+    name: Build ${{ matrix.app }} ${{ matrix.variant }}
+    runs-on: ubuntu-latest
+    container: espressif/idf:v6.1
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: rear_eink
+            variant: ""
+          - app: rear_eink
+            variant: bt2
+          - app: rear_eink
+            variant: test_pattern
+          - app: ble_probe
+            variant: ""
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        shell: bash
+        run: |
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+          scripts/ci.sh build "${{ matrix.app }}" "${{ matrix.variant }}"

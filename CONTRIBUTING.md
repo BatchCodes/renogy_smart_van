@@ -36,7 +36,7 @@ Or build in Docker, with no native installation:
 ./scripts/idf_docker.sh firmware/rear_eink build
 ```
 
-To change the ESP-IDF version, update [scripts/esp_idf_version.txt](scripts/esp_idf_version.txt) and the image tag in [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json) in the same change.
+To change the ESP-IDF version, update [scripts/esp_idf_version.txt](scripts/esp_idf_version.txt), the image tag in [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json) and the image tag in [.github/workflows/ci.yml](.github/workflows/ci.yml) in the same change.
 
 ## Test
 
@@ -54,6 +54,16 @@ To test on hardware, flash the app and read the serial monitor:
 ```bash
 idf.py -p /dev/ttyUSB0 flash monitor
 ```
+
+## Continuous Integration
+
+GitHub Actions runs [scripts/ci.sh](scripts/ci.sh) on each push and pull request: the host tests, and a build of each app and each `sdkconfig.ci.*` variant. To run the same checks locally in the same image:
+
+```bash
+docker run --rm -v "$PWD:/project" -w /project espressif/idf:v6.1 scripts/ci.sh all
+```
+
+The container runs as `root`, so the build directories it makes belong to `root`. Delete them with `sudo`, or run the checks on a copy of the repository. To add a configuration to CI, add a `firmware/<app>/sdkconfig.ci.<variant>` file and a matrix entry in the workflow.
 
 ## Code Style
 

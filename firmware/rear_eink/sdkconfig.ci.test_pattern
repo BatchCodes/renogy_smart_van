@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# CI variant: test pattern mode, Heltec V1.0 panel, 90 degree rotation.
+CONFIG_REAR_EINK_MODE_TEST_PATTERN=y
+CONFIG_REAR_EINK_PANEL_V1_0=y
+CONFIG_REAR_EINK_ROTATION_90=y

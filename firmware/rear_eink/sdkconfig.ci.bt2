@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# CI variant: charging display with the Renogy BT-2 source.
+CONFIG_REAR_EINK_SOURCE_BT2=y
