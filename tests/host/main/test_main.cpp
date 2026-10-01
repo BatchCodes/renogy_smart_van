@@ -13,5 +13,6 @@ int main() {
     run_eink_view_tests();
     run_renogy_protocol_tests();
     run_cab_ui_tests();
+    run_debouncer_tests();
     return UNITY_END();
 }

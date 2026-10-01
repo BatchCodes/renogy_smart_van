@@ -72,7 +72,11 @@ These items are not verified on hardware:
 
 ## Header Pins
 
-These GPIOs on the 40-pin header are free: 2, 3, 4, 5, 21, 22, 28 to 32, 46 to 52. The planned reverse-gear input uses GPIO4 or GPIO5, through a protection circuit (Phase 3). Do not use GPIO7 and GPIO8 (I2C), GPIO37 and GPIO38 (console), GPIO34 and GPIO35 (strapping pins), or GPIO24 and GPIO25 (USB).
+These GPIOs on the 40-pin header are free: 2, 3, 4, 5, 21, 22, 28 to 32, 46 to 52. The reverse-gear input uses GPIO4 by default, through an optocoupler circuit. Refer to [Reverse gear input](reverse_input.md). Do not use GPIO7 and GPIO8 (I2C), GPIO37 and GPIO38 (console), GPIO34 and GPIO35 (strapping pins), or GPIO24 and GPIO25 (USB).
+
+## See Also
+
+- [Reverse gear input](reverse_input.md)
 
 ## Sources
 

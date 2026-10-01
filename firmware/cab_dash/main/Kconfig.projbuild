@@ -45,6 +45,29 @@ menu "Cab dashboard"
         default 576 if CAB_DASH_CAMERA_720X576
         default 480
 
+    config CAB_DASH_REVERSE_GPIO
+        int "Reverse input GPIO (-1 = no reverse input)"
+        range -1 54
+        default 4
+        help
+            The GPIO for the reverse-gear input circuit. Refer to
+            docs/renogy_displays/reverse_input.md. GPIO4 and GPIO5 are free on the
+            40-pin header.
+
+    config CAB_DASH_REVERSE_ACTIVE_LOW
+        bool "Reverse input is active low"
+        default y
+        depends on CAB_DASH_REVERSE_GPIO >= 0
+        help
+            With the optocoupler circuit, the input is low in reverse. The GPIO
+            internal pull-up is on.
+
+    config CAB_DASH_REVERSE_DEBOUNCE_MS
+        int "Reverse debounce (milliseconds)"
+        range 0 1000
+        default 50
+        depends on CAB_DASH_REVERSE_GPIO >= 0
+
     config CAB_DASH_BACKLIGHT_TIMEOUT_S
         int "Backlight off after no touch for (seconds, 0 = never)"
         range 0 86400
