@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# CI variant: dashboard with the Renogy BT-2 source.
+CONFIG_CAB_DASH_SOURCE_BT2=y

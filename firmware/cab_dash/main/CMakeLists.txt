@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 idf_component_register(
-    SRCS "main.cpp" "test_screen.cpp" "ble.cpp"
+    SRCS "main.cpp" "test_screen.cpp" "ble.cpp" "data_hub.cpp"
     PRIV_REQUIRES waveshare__esp32_p4_wifi6_touch_lcd_4_3 espressif__esp_hosted renogy_ble charging_data esp_timer
 )
 

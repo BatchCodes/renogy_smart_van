@@ -96,6 +96,7 @@ run_all() {
   build_app rear_eink test_pattern
   build_app ble_probe
   build_app cab_dash
+  build_app cab_dash bt2
 }
 
 main() {

@@ -39,6 +39,8 @@ jobs:
             variant: ""
           - app: cab_dash
             variant: ""
+          - app: cab_dash
+            variant: bt2
     steps:
       - uses: actions/checkout@v4
       - name: Build

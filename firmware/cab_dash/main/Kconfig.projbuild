@@ -14,6 +14,38 @@ menu "Cab dashboard"
             bool "270 degrees"
     endchoice
 
+    choice CAB_DASH_SOURCE
+        prompt "Data source"
+        default CAB_DASH_SOURCE_FAKE
+        help
+            Fake: simulated values, for testing the dashboard with no BT-2.
+            Renogy BT-2: live values from the charger, through BLE on the C6. Set
+            the BLE options in the "Renogy BT-2" menu.
+
+        config CAB_DASH_SOURCE_FAKE
+            bool "Fake data"
+        config CAB_DASH_SOURCE_BT2
+            bool "Renogy BT-2"
+    endchoice
+
+    config CAB_DASH_POLL_INTERVAL_MS
+        int "Data poll interval (milliseconds)"
+        range 100 60000
+        default 1000
+        help
+            How often the data task asks the source for a new reading. The BT-2
+            source reads the charger at its own poll interval.
+
+    config CAB_DASH_STALE_AFTER_S
+        int "Show the data age after (seconds)"
+        range 1 86400
+        default 30
+
+    config CAB_DASH_OFFLINE_AFTER_S
+        int "Show offline after (seconds)"
+        range 1 86400
+        default 120
+
     config CAB_DASH_BRIGHTNESS_PERCENT
         int "Backlight brightness (percent)"
         range 5 100
