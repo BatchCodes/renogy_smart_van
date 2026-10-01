@@ -94,6 +94,8 @@ render_previews() {
   local build_dir="${REPO_DIR}/tools/lvgl_preview/build"
 
   install_host_test_packages
+  # In the espressif/idf image, cmake comes with the ESP-IDF tools.
+  load_idf
   cmake -S "${REPO_DIR}/tools/lvgl_preview" -B "${build_dir}" -DCMAKE_BUILD_TYPE=Release
   cmake --build "${build_dir}" --parallel
   mkdir -p "${build_dir}/previews"
