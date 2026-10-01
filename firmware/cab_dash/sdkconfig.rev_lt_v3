@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Older ESP32-P4 chip revisions (v1.x). Check the revision with:
+#   esptool --chip esp32p4 -p /dev/ttyACM0 chip-id
+# An image built for v3.x does not boot on v1.x.
+CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y
+CONFIG_ESP32P4_REV_MIN_100=y

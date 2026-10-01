@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+menu "Cab dashboard"
+
+    choice CAB_DASH_ROTATION
+        prompt "Display rotation"
+        default CAB_DASH_ROTATION_90
+        help
+            The panel is 480 x 800 portrait. The dashboard is landscape. Select
+            270 degrees if the image is upside down on your mounting.
+
+        config CAB_DASH_ROTATION_90
+            bool "90 degrees"
+        config CAB_DASH_ROTATION_270
+            bool "270 degrees"
+    endchoice
+
+    config CAB_DASH_BRIGHTNESS_PERCENT
+        int "Backlight brightness (percent)"
+        range 5 100
+        default 80
+
+endmenu

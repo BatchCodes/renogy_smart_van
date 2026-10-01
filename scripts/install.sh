@@ -9,7 +9,7 @@ REPO_DIR="$(dirname -- "${SCRIPT_DIR}")"
 PACKAGES_FILE="${REPO_DIR}/system_packages.txt"
 IDF_VERSION_FILE="${SCRIPT_DIR}/esp_idf_version.txt"
 IDF_REPO_URL="https://github.com/espressif/esp-idf.git"
-IDF_TARGETS="esp32,esp32s3"
+IDF_TARGETS="esp32,esp32s3,esp32p4"
 SERIAL_GROUP="dialout"
 
 usage() {

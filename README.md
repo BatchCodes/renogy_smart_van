@@ -35,6 +35,7 @@ The BT-2 is a bridge between the charger's RS485 port and BLE. The firmware send
 | Other Renogy controllers with a BT-2 or BT-1 module | Untested | The protocol is the same. The register map can be different. |
 | [Heltec Wireless Paper](https://heltec.org/project/wireless-paper/) (ESP32-S3, 2.13" e-paper) | Tested on V1.1.1/V1.2 | The first display board. Hardware versions V1.0, V1.1, V1.1.1 and V1.2 use different panels. The firmware supports all of them. Refer to [Heltec Wireless Paper hardware notes](docs/renogy_displays/heltec_wireless_paper.md). |
 | Other ESP32-S3 boards with an e-paper panel | Untested | Refer to [CONTRIBUTING.md](CONTRIBUTING.md) to add a board. |
+| [Waveshare ESP32-P4-WIFI6-Touch-LCD-4.3](https://www.waveshare.com/product/iot-communication/short-range-wireless/esp32-p4-wifi6-touch-lcd-4.3.htm) (cab unit) | In development | `firmware/cab_dash`. Builds, not tested on hardware. Refer to [Waveshare ESP32-P4 board notes](docs/renogy_displays/waveshare_p4_43.md). |
 | Any ESP32 development board (for example ESP-WROOM-32) | Development only | Use it to test the BLE connection without a display. |
 
 ## Required Tools
@@ -70,7 +71,7 @@ The script does these steps:
 
 1. It installs the packages in `system_packages.txt` with `apt-get`. This step needs `sudo`.
 2. It clones the pinned ESP-IDF release to `~/esp/esp-idf`, or updates an existing clone to that release.
-3. It installs the ESP-IDF tools for the `esp32` and `esp32s3` targets.
+3. It installs the ESP-IDF tools for the `esp32`, `esp32s3` and `esp32p4` targets.
 4. It adds your user to the `dialout` group, so you can use the serial port without `sudo`.
 
 After the script completes, log out and log in again to apply the group change. You can run the script again at any time. It skips work that is already done.
@@ -91,7 +92,7 @@ Use this procedure on a system without `apt-get`, or if you want to control each
 3. Install the ESP-IDF tools:
 
    ```bash
-   ~/esp/esp-idf/install.sh esp32,esp32s3
+   ~/esp/esp-idf/install.sh esp32,esp32s3,esp32p4
    ```
 
 4. Add your user to the `dialout` group, then log out and log in again:

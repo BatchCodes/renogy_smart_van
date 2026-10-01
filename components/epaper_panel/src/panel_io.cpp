@@ -23,33 +23,22 @@ constexpr std::uint32_t kPowerSettleMs = 50;
 esp_err_t PanelIo::create(const PanelPins& pins, std::unique_ptr<PanelIo>& out) {
     std::unique_ptr<PanelIo> io(new PanelIo(pins));
 
-    const gpio_config_t output_config = {
-        .pin_bit_mask = (1ULL << pins.dc) | (1ULL << pins.rst),
-        .mode = GPIO_MODE_OUTPUT,
-        .pull_up_en = GPIO_PULLUP_DISABLE,
-        .pull_down_en = GPIO_PULLDOWN_DISABLE,
-        .intr_type = GPIO_INTR_DISABLE,
-    };
+    // Value-initialise: some targets add fields to gpio_config_t.
+    gpio_config_t output_config = {};
+    output_config.pin_bit_mask = (1ULL << pins.dc) | (1ULL << pins.rst);
+    output_config.mode = GPIO_MODE_OUTPUT;
     ESP_RETURN_ON_ERROR(gpio_config(&output_config), kTag, "DC and RST pins");
     gpio_set_level(pins.rst, 1);
 
-    const gpio_config_t busy_config = {
-        .pin_bit_mask = 1ULL << pins.busy,
-        .mode = GPIO_MODE_INPUT,
-        .pull_up_en = GPIO_PULLUP_DISABLE,
-        .pull_down_en = GPIO_PULLDOWN_DISABLE,
-        .intr_type = GPIO_INTR_DISABLE,
-    };
+    gpio_config_t busy_config = {};
+    busy_config.pin_bit_mask = 1ULL << pins.busy;
+    busy_config.mode = GPIO_MODE_INPUT;
     ESP_RETURN_ON_ERROR(gpio_config(&busy_config), kTag, "BUSY pin");
 
     if (pins.power != GPIO_NUM_NC) {
-        const gpio_config_t power_config = {
-            .pin_bit_mask = 1ULL << pins.power,
-            .mode = GPIO_MODE_OUTPUT,
-            .pull_up_en = GPIO_PULLUP_DISABLE,
-            .pull_down_en = GPIO_PULLDOWN_DISABLE,
-            .intr_type = GPIO_INTR_DISABLE,
-        };
+        gpio_config_t power_config = {};
+        power_config.pin_bit_mask = 1ULL << pins.power;
+        power_config.mode = GPIO_MODE_OUTPUT;
         ESP_RETURN_ON_ERROR(gpio_config(&power_config), kTag, "power pin");
         gpio_set_level(pins.power, pins.power_active_low ? 0 : 1);
         vTaskDelay(pdMS_TO_TICKS(kPowerSettleMs));

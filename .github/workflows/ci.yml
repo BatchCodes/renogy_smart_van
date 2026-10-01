@@ -37,6 +37,8 @@ jobs:
             variant: test_pattern
           - app: ble_probe
             variant: ""
+          - app: cab_dash
+            variant: ""
     steps:
       - uses: actions/checkout@v4
       - name: Build

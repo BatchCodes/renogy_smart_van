@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Exact versions, so every build uses the same BSP, LVGL and esp_hosted.
+dependencies:
+  idf: ">=6.1"
+  waveshare/esp32_p4_wifi6_touch_lcd_4_3: "==1.0.1"
